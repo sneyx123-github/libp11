@@ -1,6 +1,6 @@
 dnl -*- mode: m4; -*-
 
-AC_PREREQ(2.60)
+AC_PREREQ([2.72])
 
 # When bumping versions see also the LT version numbers below.
 define([PACKAGE_VERSION_MAJOR], [0])
@@ -14,6 +14,7 @@ AC_CONFIG_HEADERS([src/config.h])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CANONICAL_TARGET
 AM_INIT_AUTOMAKE([subdir-objects])
+LT_INITLT_INIT
 
 LIBP11_VERSION_MAJOR="PACKAGE_VERSION_MAJOR"
 LIBP11_VERSION_MINOR="PACKAGE_VERSION_MINOR"
@@ -171,14 +172,25 @@ ifdef(
 		LT_LANG([Windows Resource])
 	],
 	[
-		AC_LIBTOOL_WIN32_DLL
-		AC_LIBTOOL_RC
-		AC_PROG_LIBTOOL
+		AC_REQUIRE(AC_CANONICAL_HOST)_LT_SET_OPTION([LT_INIT],[win32-dll])
+m4_warn([obsolete],[AC_LIBTOOL_WIN32_DLL: Remove this warning and the call to _LT_SET_OPTION when you
+put the 'win32-dll' option into LT_INIT's first parameter.])
+
+		LT_LANG([Windows Resource])
+		LT_INIT
 	]
 )
 
 dnl Checks for header files.
-AC_HEADER_STDC
+m4_warn([obsolete],
+[The preprocessor macro 'STDC_HEADERS' is obsolete.
+  Except in unusual embedded environments, you can safely include all
+  C89 headers unconditionally.])dnl
+# Autoupdate added the next two lines to ensure that your configure
+# script's behavior did not change.  They are probably safe to remove.
+AC_CHECK_INCLUDES_DEFAULT
+AC_PROG_EGREP
+
 AC_HEADER_SYS_WAIT
 AC_CHECK_HEADERS([ \
 	errno.h fcntl.h malloc.h stdlib.h \
