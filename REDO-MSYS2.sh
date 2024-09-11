@@ -2,12 +2,22 @@ export PATH=/usr/bin:$PATH
 export PKG_CONFIG_PATH=/mingw64/lib/pkgconfig:$PKG_CONFIG_PATH
 
 if [ 0 -eq 1 ]; then
-	LIBS="-lssl -lcrypto" LDFLAGS="-L/mingw64/lib" CFLAGS="-I/mingw64/include" ./configure
+	make distclear
+fi
+if [ 0 -eq 1 ]; then
+	# TODO: INSTALLROOT from / to /usr
+	# 		/lib to /usr/lib
+	#
+	LIBS="-lssl -lcrypto" LDFLAGS="-L/mingw64/lib" CFLAGS="-I/mingw64/include -g -O0" CXXFLAGS="-g -O0" ./configure
+	###	./configure CFLAGS="-g -O0" CXXFLAGS="-g -O0"
 	make
 	make install
 fi
+if [ 0 -eq 0 ]; then
+	ldd /lib/engines-3/libpkcs11.dll
+fi
 
-if [ 0 -eq 1 ]; then
+if [ 0 -eq 0 ]; then
 	cp src/.libs/pkcs11.dll /usr/lib/openssl/engines-3/
 fi
 if [ 0 -eq 0 ]; then
