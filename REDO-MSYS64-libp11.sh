@@ -1,10 +1,10 @@
 export PATH=/usr/bin:$PATH
 export PKG_CONFIG_PATH=/mingw64/lib/pkgconfig:$PKG_CONFIG_PATH
 
-if [ 0 -eq 1 ]; then
+if [ 0 -eq 0 ]; then
 	make distclear
 fi
-if [ 0 -eq 1 ]; then
+if [ 0 -eq 0 ]; then
 	# TODO: INSTALLROOT from / to /usr
 	# 		/lib to /usr/lib
 	#

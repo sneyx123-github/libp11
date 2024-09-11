@@ -3,6 +3,9 @@ if [ 0 -eq 1 ]; then
 	less $dx/README.md 
 fi
 
+unset OPENSSL_CONF
+unset PKCS11_MODULE_PATH
+
 echo ""
 echo "[WHICH: openssl]"
 which openssl
@@ -16,8 +19,9 @@ echo "[OPENSSL: engine -t]"
 #openssl engine -t
 openssl engine -t pkcs11
 
-ykcs11=/usr/lib/ossl-modules/libykcs11.dll 
 pkcs11=/usr/lib/openssl/engines-3/pkcs11.dll
+ykcs11=/usr/lib/ossl-modules/libykcs11.dll 
+#ykcs11=/usr/lib/ossl-modules/opensc-pkcs11.dll 
 
 
 echo ""
@@ -30,13 +34,15 @@ TOKEN=0;
 OBJECT=root_ca_key; 
 TYPE=private; 
 
-export OPENSSL_CONF=x4.cnf 
-export PKCS11_MODULE_PATH=/usr/lib/ossl-modules/libykcs11.dll
+export OPENSSL_CONF="$(pwd)/x4.cnf"
+export PKCS11_MODULE_PATH=$ykcs11
+
+echo "[EXPORT: OPENSSL_CONF:$OPENSSL_CONF PKCS11_MODULE_PATH:$PKCS11_MODULE_PATH]"
 
 #pushd /c/Program\ Files/Yubico/Yubico\ PIV\ Tool/bin
 pushd  /usr/lib/ossl-modules
 
-if [ 0 -eq 1 ]; then
+if [ 0 -eq 0 ]; then
 	openssl x509 \
 		-req \
 		-in $dp/xykca_winrm.csr \
